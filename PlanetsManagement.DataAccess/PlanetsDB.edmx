@@ -1,0 +1,361 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="PlanetsDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Captains">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="500" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Planets">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="text" Nullable="false" />
+          <Property Name="StatusId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Image" Type="text" Nullable="false" />
+          <Property Name="LastCaptainUpdate" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Planets_Robots">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdPlanet" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="IdRobot" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Robots">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IdCaptain" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Planets_Robots_Planets">
+          <End Role="Planets" Type="Self.Planets" Multiplicity="1" />
+          <End Role="Planets_Robots" Type="Self.Planets_Robots" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Planets">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Planets_Robots">
+              <PropertyRef Name="IdPlanet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Planets_Robots_Robots">
+          <End Role="Robots" Type="Self.Robots" Multiplicity="1" />
+          <End Role="Planets_Robots" Type="Self.Planets_Robots" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Robots">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Planets_Robots">
+              <PropertyRef Name="IdRobot" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Planets_Status">
+          <End Role="Status" Type="Self.Status" Multiplicity="1" />
+          <End Role="Planets" Type="Self.Planets" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Planets">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Robots_Captains">
+          <End Role="Captains" Type="Self.Captains" Multiplicity="1" />
+          <End Role="Robots" Type="Self.Robots" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Captains">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Robots">
+              <PropertyRef Name="IdCaptain" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PlanetsDBModelStoreContainer">
+          <EntitySet Name="Captains" EntityType="Self.Captains" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Planets" EntityType="Self.Planets" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Planets_Robots" EntityType="Self.Planets_Robots" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Robots" EntityType="Self.Robots" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Status" EntityType="Self.Status" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Planets_Robots_Planets" Association="Self.FK_Planets_Robots_Planets">
+            <End Role="Planets" EntitySet="Planets" />
+            <End Role="Planets_Robots" EntitySet="Planets_Robots" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Planets_Robots_Robots" Association="Self.FK_Planets_Robots_Robots">
+            <End Role="Robots" EntitySet="Robots" />
+            <End Role="Planets_Robots" EntitySet="Planets_Robots" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Planets_Status" Association="Self.FK_Planets_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Planets" EntitySet="Planets" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Robots_Captains" Association="Self.FK_Robots_Captains">
+            <End Role="Captains" EntitySet="Captains" />
+            <End Role="Robots" EntitySet="Robots" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PlanetsDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Planet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="StatusId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Status" Relationship="PlanetsDBModel.FK_Planets_Status" FromRole="Planet" ToRole="Status" />
+          <Property Name="Image" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Planets_Robots" Relationship="PlanetsDBModel.FK_Planets_Robots_Planets" FromRole="Planet" ToRole="Planets_Robots" />
+          <Property Name="LastCaptainUpdate" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Planets_Robots1" Relationship="PlanetsDBModel.FK_Planets_Robots_Planets1" FromRole="Planet" ToRole="Planets_Robots" />
+        </EntityType>
+        <EntityContainer Name="PlanetsDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Planets" EntityType="Self.Planet" />
+          <EntitySet Name="Status" EntityType="PlanetsDBModel.Status" />
+          <AssociationSet Name="FK_Planets_Status" Association="PlanetsDBModel.FK_Planets_Status">
+            <End Role="Status" EntitySet="Status" />
+            <End Role="Planet" EntitySet="Planets" />
+          </AssociationSet>
+          <EntitySet Name="Robots" EntityType="PlanetsDBModel.Robot" />
+          <EntitySet Name="Planets_Robots" EntityType="PlanetsDBModel.Planets_Robots" />
+          <AssociationSet Name="FK_Planets_Robots_Planets" Association="PlanetsDBModel.FK_Planets_Robots_Planets">
+            <End Role="Planet" EntitySet="Planets" />
+            <End Role="Planets_Robots" EntitySet="Planets_Robots" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Planets_Robots_Robots" Association="PlanetsDBModel.FK_Planets_Robots_Robots">
+            <End Role="Robot" EntitySet="Robots" />
+            <End Role="Planets_Robots" EntitySet="Planets_Robots" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Planets_Robots_Planets1" Association="PlanetsDBModel.FK_Planets_Robots_Planets1">
+            <End Role="Planet" EntitySet="Planets" />
+            <End Role="Planets_Robots" EntitySet="Planets_Robots" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Planets_Robots_Robots1" Association="PlanetsDBModel.FK_Planets_Robots_Robots1">
+            <End Role="Robot" EntitySet="Robots" />
+            <End Role="Planets_Robots" EntitySet="Planets_Robots" />
+          </AssociationSet>
+          <EntitySet Name="Captains" EntityType="PlanetsDBModel.Captain" />
+          <AssociationSet Name="FK_Robots_Captains" Association="PlanetsDBModel.FK_Robots_Captains">
+            <End Role="Captain" EntitySet="Captains" />
+            <End Role="Robot" EntitySet="Robots" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Status">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Planets" Relationship="PlanetsDBModel.FK_Planets_Status" FromRole="Status" ToRole="Planet" />
+        </EntityType>
+        <Association Name="FK_Planets_Status">
+          <End Type="PlanetsDBModel.Status" Role="Status" Multiplicity="1" />
+          <End Type="PlanetsDBModel.Planet" Role="Planet" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Status">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Planet">
+              <PropertyRef Name="StatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Robot">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Planets_Robots" Relationship="PlanetsDBModel.FK_Planets_Robots_Robots" FromRole="Robot" ToRole="Planets_Robots" />
+          <NavigationProperty Name="Planets_Robots1" Relationship="PlanetsDBModel.FK_Planets_Robots_Robots1" FromRole="Robot" ToRole="Planets_Robots" />
+          <Property Name="IdCaptain" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Captain" Relationship="PlanetsDBModel.FK_Robots_Captains" FromRole="Robot" ToRole="Captain" />
+        </EntityType>
+        <EntityType Name="Planets_Robots">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="IdPlanet" Type="Guid" Nullable="false" />
+          <Property Name="IdRobot" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Planet" Relationship="PlanetsDBModel.FK_Planets_Robots_Planets" FromRole="Planets_Robots" ToRole="Planet" />
+          <NavigationProperty Name="Robot" Relationship="PlanetsDBModel.FK_Planets_Robots_Robots" FromRole="Planets_Robots" ToRole="Robot" />
+          <NavigationProperty Name="Planet1" Relationship="PlanetsDBModel.FK_Planets_Robots_Planets1" FromRole="Planets_Robots" ToRole="Planet" />
+          <NavigationProperty Name="Robot1" Relationship="PlanetsDBModel.FK_Planets_Robots_Robots1" FromRole="Planets_Robots" ToRole="Robot" />
+        </EntityType>
+        <Association Name="FK_Planets_Robots_Planets">
+          <End Type="PlanetsDBModel.Planet" Role="Planet" Multiplicity="1" />
+          <End Type="PlanetsDBModel.Planets_Robots" Role="Planets_Robots" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Planet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Planets_Robots">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Planets_Robots_Robots">
+          <End Type="PlanetsDBModel.Robot" Role="Robot" Multiplicity="1" />
+          <End Type="PlanetsDBModel.Planets_Robots" Role="Planets_Robots" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Robot">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Planets_Robots">
+              <PropertyRef Name="Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Planets_Robots_Planets1">
+          <End Type="PlanetsDBModel.Planet" Role="Planet" Multiplicity="1" />
+          <End Type="PlanetsDBModel.Planets_Robots" Role="Planets_Robots" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Planet">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Planets_Robots">
+              <PropertyRef Name="IdPlanet" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Planets_Robots_Robots1">
+          <End Type="PlanetsDBModel.Robot" Role="Robot" Multiplicity="1" />
+          <End Type="PlanetsDBModel.Planets_Robots" Role="Planets_Robots" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Robot">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Planets_Robots">
+              <PropertyRef Name="IdRobot" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Captain">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Guid" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Robots" Relationship="PlanetsDBModel.FK_Robots_Captains" FromRole="Captain" ToRole="Robot" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_Robots_Captains">
+          <End Type="PlanetsDBModel.Captain" Role="Captain" Multiplicity="1" />
+          <End Type="PlanetsDBModel.Robot" Role="Robot" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Captain">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Robot">
+              <PropertyRef Name="IdCaptain" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PlanetsDBModelStoreContainer" CdmEntityContainer="PlanetsDBEntities">
+          <EntitySetMapping Name="Planets">
+            <EntityTypeMapping TypeName="PlanetsDBModel.Planet">
+              <MappingFragment StoreEntitySet="Planets">
+                <ScalarProperty Name="LastCaptainUpdate" ColumnName="LastCaptainUpdate" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="StatusId" ColumnName="StatusId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Status">
+            <EntityTypeMapping TypeName="PlanetsDBModel.Status">
+              <MappingFragment StoreEntitySet="Status">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Robots">
+            <EntityTypeMapping TypeName="PlanetsDBModel.Robot">
+              <MappingFragment StoreEntitySet="Robots">
+                <ScalarProperty Name="IdCaptain" ColumnName="IdCaptain" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Planets_Robots">
+            <EntityTypeMapping TypeName="PlanetsDBModel.Planets_Robots">
+              <MappingFragment StoreEntitySet="Planets_Robots">
+                <ScalarProperty Name="IdRobot" ColumnName="IdRobot" />
+                <ScalarProperty Name="IdPlanet" ColumnName="IdPlanet" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Captains">
+            <EntityTypeMapping TypeName="PlanetsDBModel.Captain">
+              <MappingFragment StoreEntitySet="Captains">
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
